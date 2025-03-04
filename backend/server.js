@@ -1,6 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { cocktails } from "./cocktails.js";
+
+dotenv.config;
 
 const app = express();
 app.use(
@@ -17,19 +20,6 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );
-
-const cocktails = [
-  {
-    id: 1,
-    name: "Margarita",
-    ingredients: ["Tequila", "Lime Juice", "Triple Sec"],
-  },
-  {
-    id: 2,
-    name: "Old Fashioned",
-    ingredients: ["Bourbon", "Bitters", "Sugar"],
-  },
-];
 
 app.get("/", (req, res) => {
   res.send("Cocktail API is running!");
