@@ -24,6 +24,9 @@ export const cocktails = [
       ingredients.apple_brandy,
       ingredients.sweet_vermouth,
     ],
+    description: "",
+    flavors: "",
+    instructions: "",
   },
   {
     id: 2,
