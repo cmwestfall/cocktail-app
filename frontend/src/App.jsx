@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { CocktailCard } from "./components/CocktailCard";
 
 export default function App() {
   const [cocktails, setCocktails] = useState([]);
   const [randomCocktail, setRandomCocktail] = useState(null);
+  const [dailyCocktail, setDailyCocktail] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/cocktails")
@@ -13,6 +15,7 @@ export default function App() {
       .then((data) => {
         console.log("Cocktail data:", data);
         setCocktails(data);
+        initializeDailyCocktail(data);
       })
       .catch((error) => console.error("Error fetching cocktails", error));
   }, []);
@@ -20,9 +23,24 @@ export default function App() {
   const renderIngredients = (ingredients) =>
     ingredients.map((ingredient) => ingredient.name).join(",");
 
-  const getRandomCocktail = () => {
+  const getRandomCocktail = (cocktailList) => {
     const randomIdx = Math.floor(Math.random() * cocktails.length);
-    setRandomCocktail(cocktails[randomIdx]);
+    return cocktailList[randomIdx];
+  };
+
+  const initializeDailyCocktail = (cocktailList) => {
+    const today = new Date().toISOString().split("T")[0];
+    const storedCocktail = localStorage.getItem("dailyCocktail");
+    const storedDate = localStorage.getItem("dailyCocktailDate");
+
+    if (storedCocktail && storedDate === today) {
+      setDailyCocktail(JSON.parse(storedCocktail));
+    } else {
+      const newDailyCocktail = getRandomCocktail(cocktailList);
+      setDailyCocktail(newDailyCocktail);
+      localStorage.setItem("dailyCocktail", JSON.stringify(newDailyCocktail));
+      localStorage.setItem("dailyCocktailDate", today);
+    }
   };
 
   return (
@@ -36,13 +54,12 @@ export default function App() {
           </li>
         ))}
       </ul>
-      <button onClick={getRandomCocktail}>Cocktail of the Day</button>
-
+      <CocktailCard title="Cocktail of the Day" cocktail={dailyCocktail} />
+      <button onClick={() => setRandomCocktail(getRandomCocktail(cocktails))}>
+        Get a Random Cocktail
+      </button>
       {randomCocktail && (
-        <div>
-          <h2>Cocktail of the Day: {randomCocktail.name}</h2>
-          <p>Ingredients: {renderIngredients(randomCocktail.ingredients)}</p>
-        </div>
+        <CocktailCard title="Random Cocktail" cocktail={randomCocktail} />
       )}
     </div>
   );
