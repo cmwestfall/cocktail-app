@@ -1,6 +1,6 @@
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
-export function CocktailCard({ title, cocktail }) {
+export function CocktailCard({ cocktail }) {
   const [preference, setPreference] = useLocalStorage(
     `cocktail-${cocktail}`,
     null
@@ -14,9 +14,7 @@ export function CocktailCard({ title, cocktail }) {
 
   return (
     <div>
-      <h2>
-        {title}: {cocktail.name}
-      </h2>
+      {cocktail.name}
       <p>Ingredients: {cocktail.ingredients.map((i) => i.name).join(",")}</p>
       <button
         onClick={() => handlePreference("like")}
