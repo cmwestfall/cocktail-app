@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page-header {
+  background-color: blue;
+  display: flex;
+}
+
+.links {
+  background-color: red;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex: 2;
+}
+
+.links > a {
+  justify-content: center;
+  align-items: center;
+}
+
+.info-section {
+  text-align: center;
+  background-color: yellow;
+}
+
+.info-section-children {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  text-align: left;
+}
+
+.info-section-children:children {
+  flex: 1;
+}
